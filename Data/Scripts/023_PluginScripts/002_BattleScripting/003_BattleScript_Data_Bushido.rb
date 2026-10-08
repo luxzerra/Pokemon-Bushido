@@ -294,6 +294,32 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  KomoreiAlly1 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    pbMessage("\\xn[Chikako]\\rThis \\c[9]Akui Clan\\r grunt looks quite unskilled, \\PN.")
+    pbMessage("\\xn[Chikako]\\rTogether we can take this guy down in no time!")
+    pbMessage("\\xn[Chikako]\\rLet me show you the power of the \\c[3]Komorei Clan\\r!")
+    scene.disappearBar
+    battle.pbStartTerrainEx(ally2, :Grassy)
+    battle.pbAnimation(:SUNNYDAY, ally2, ally1)
+    battle.pbStartWeatherEx(ally1, :Sun)
+    ally1.pbRaiseStatStageEx(:SPATK, 1, forced: true)
+    ally2.pbRaiseStatStageEx(:SPATK, 1, forced: true)
+    scene.appearBar
+    pbMessage("\\bYou'd both better take the \\c[9]Akui Clan\\b seriously!")
+    pbMessage("\\bEven though this is a 2v1 fight... I'll prove myself and make Mashiro proud!")
+    scene.disappearBar
+    ally1.pbInflictStatusEx(:POISON, 0, :POISONKUNAI, ally1, false, nil, nil, enemy1)
+    ally2.pbInflictStatusEx(:POISON, 0, :POISONKUNAI, ally2, false, nil, nil, enemy1)
+    ally1.pbSetHazards(:TOXICSPIKES, enemy1) if strong_katanas?
+    scene.pbHideOpponent
+  }
+
   KomoreiDojo1 = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -3006,15 +3032,19 @@ module DialogueModule
     pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
     vRI("KATANALIGHT", 1)
     vDI("KATANABASIC") if vHI("KATANABASIC")
-    pbMessage("You may now snag \\c[9]AShadow Pokémon\c[0] from the \\c[9]Akui Clan\\c[0]!")
+    pbMessage("You may now snag \\c[9]Shadow Pokémon\\c[0] from the \\c[9]Akui Clan\\c[0]!")
     scene.appearBar
     pbMessage("\\xn[Shogun]\\b\\PN! You must use the power of light to counter these \\c[9]Shadow Pokemon\\b! Capture them and purify their souls!")
+    pbMessage("\\xn[Shogun]\\bWith the Katana of Light you can also use Katana Techniques to weaken \\c[9]Shadow Pokemon\\b!")
+    pbMessage("\\xn[Shogun]\\bQuick, while they're still blinded by the light! Take this scroll for Hikari, this was one of Ryo's signature techniques!")
+    vRI("PKTHIKARI")
+    pbMessage("\\xn[Shogun]\\bKatana Techniques use Spirit Energy, so be careful \\PN!")
     #scene.disappearBar
     unlockKatanaOfLight()
     #scene.appearBar
     scene.pbShowOpponent(0)
-    pbMessage("Hngh- That light... what's going on?")
-    pbMessage("The Katana of Light has awoken again... You'll never snag my \\c[9]Shadow Pokémon\\c[0]!")
+    pbMessage("Hngh- That blinding light... what's going on?")
+    pbMessage("So... The Katana of Light has awoken again... You'll never snag my \\c[9]Shadow Pokémon\\c[0]!")
     scene.disappearBar
     scene.pbHideOpponent
   }

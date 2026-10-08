@@ -187,20 +187,14 @@ def pbReceiveItem(item, quantity = 1)
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
   meName = $PokemonBag.pbCanStore?(item,quantity) ? ((pbIsKeyItem?(item)) ? "PLA 014 Caught a Pokemon!" : "PLA 036 Obtained a Key Item!") : ""
-  if isConst?(item,PBItems,:KATANABASIC)
+  if itemname.include?("Katana")
     meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:KATANALIGHT)
+  end
+  if isConst?(item,PBItems,:HABITATSCROLL)
     meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:KATANALIGHT2)
-    meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:KATANALIGHT3)
-    meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:KATANALIGHT4)
-    meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:KATANALIGHT5)
-    meName = "BOTW-GetFanfare"
-  elsif isConst?(item,PBItems,:HABITATSCROLL)
-    meName = "BOTW-GetFanfare"
+  end
+  if itemname.include?("KT -")
+    meName = "PLA 017 Rank Up!"
   end
   if $PokemonBag.pbCanStore?(item,quantity)
     scene = $game_player.addFoundItem(item)
@@ -209,6 +203,8 @@ def pbReceiveItem(item, quantity = 1)
   end
   if isConst?(item,PBItems,:LEFTOVERS)
     pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
+  elsif itemname.include?("KT -")
+    pbMessage(_INTL("\\me[{1}]You learned the Katana Technique \\c[1]{2}\\c[0]!\\wtnp[90]",meName,itemname))
   elsif isConst?(item,PBItems,:KATANABASIC)
     pbMessage(_INTL("You obtained the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("It's a rusty old Katana, with a mystical aura."))

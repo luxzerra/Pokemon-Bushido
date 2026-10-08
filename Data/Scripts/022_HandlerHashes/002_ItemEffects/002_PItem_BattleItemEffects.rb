@@ -294,7 +294,7 @@ ItemHandlers::CanUseInBattle.add(:PKT_Test1,proc { |item,pokemon,battler,move,fi
     next doesPlayerHaveEnoughEnergy(energycost)
 })
 
-ItemHandlers::CanUseInBattle.copy(:PKT_Test1,:PKT_Hikari, :PKT_Sakuryaku, :PKT_Moya, :PKT_Komorei, :PKT_Nensho, :PKT_Shimizu, :PKT_Tsume)
+ItemHandlers::CanUseInBattle.copy(:PKT_Test1,:PKTHIKARI, :PKT_Sakuryaku, :PKT_Moya, :PKT_Komorei, :PKT_Nensho, :PKT_Shimizu, :PKT_Tsume, :PKTQUELLRAGE)
 
 ItemHandlers::UseInBattle.add(:PKT_Test1,proc { |item,battler,battle|
   energycost = getPKTCost(item)
@@ -306,29 +306,33 @@ ItemHandlers::UseInBattle.add(:PKT_Test1,proc { |item,battler,battle|
   battler.pbRecoverHP(hpGain)
 })
 
-ItemHandlers::UseInBattle.add(:PKT_Hikari, proc { |item, battler, battle|
+ItemHandlers::UseInBattle.add(:PKTHIKARI, proc { |item, battler, battle|
   # Hikari: Lower Enemy accuracy 1 level, restore 25% HP, Protect for 1 turn. COST = 1
   energycost = getPKTCost(item)
   decrementPlayerCurrentEnergy(energycost)
   pbKatanaMoveAnimationPKT(7)
-  
-  opposing_index = (battler.index.even?) ? battler.index + 1 : battler.index - 1
-  target = battle.battlers[opposing_index]
 
-  if target && !target.fainted?
-    target.pbLowerStatStagePKT(:ACCURACY, 1, :FLASH, battler)
-  end
-  
   # Restore 25% of battler's Max HP
   battle.pbAnimation(:RECOVER, battler, battler)
   heal_amount = (battler.totalhp / 4).floor
   battler.pbRecoverHP(heal_amount)
   battle.pbDisplay(_INTL("{1}'s health was restored by 25%!", battler.name))
   
+  opposing_index = (battler.index.even?) ? battler.index + 1 : battler.index - 1
+  target = battle.battlers[opposing_index]
+
+  if target && !target.fainted?
+    if target.shadowPokemon?
+        target.pbLowerStatStagePKT(:ACCURACY, 2, :FLASH, battler)
+    else
+        target.pbLowerStatStagePKT(:ACCURACY, 1, :FLASH, battler)
+    end
+  end
+  
   # Apply the 1-turn Protect shield flag
-  battle.pbAnimation(:PROTECT, battler, battler)
-  battler.effects[PBEffects::Protect] = true
-  battle.pbDisplay(_INTL("Spirit energy protects {1}!", battler.name))
+  #battle.pbAnimation(:PROTECT, battler, battler)
+  #battler.effects[PBEffects::Protect] = true
+  #battle.pbDisplay(_INTL("Spirit energy protects {1}!", battler.name))
 })
 
 ItemHandlers::UseInBattle.add(:PKT_Sakuryaku, proc { |item, battler, battle|
@@ -429,7 +433,7 @@ ItemHandlers::UseInBattle.add(:PKT_Tsume, proc { |item, battler, battle|
 # Currently broken and damaging self, dont bully me
   energycost = getPKTCost(item)
   decrementPlayerCurrentEnergy(energycost)
-  pbKatanaMoveAnimationPKT(4)
+  pbKatanaMoveAnimationPKT(10)
 
   # Cleave HP in half if they have HP to cleave
   if battler.hp <= 1
@@ -450,6 +454,28 @@ ItemHandlers::UseInBattle.add(:PKT_Tsume, proc { |item, battler, battle|
     battler.pbSleep()
   else
     battle.pbDisplay(_INTL("{1} cannot be put to Sleep!", battler.name))
+  end
+})
+
+ItemHandlers::UseInBattle.add(:PKTQUELLRAGE, proc { |item, battler, battle| 
+  energycost = getPKTCost(item) 
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(10) 
+  
+  battle.pbAnimation(:CALMMIND, battler, battler)
+  battle.battlers.each do |target|
+    next if target.nil? || target.fainted?
+    
+    is_user_even = (battler.index % 2 == 0)
+    is_target_even = (target.index % 2 == 0)
+    next if is_user_even == is_target_even
+
+    # Lower Stats, extra effective if Shadow
+    if target.shadowPokemon?
+        target.pbLowerStatStagePKT([:ATTACK, :SPATK, :SPEED], 2)
+    else
+        target.pbLowerStatStagePKT([:ATTACK, :SPATK], 1)
+    end
   end
 })
 

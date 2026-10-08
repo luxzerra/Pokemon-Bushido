@@ -313,24 +313,8 @@ def pbKatanaMoveAnimationPKT(color=1)
   bar_viewport.z = 100000 
 
   bg=Sprite.new(viewport)
-  if color == 1
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg1")
-  elsif color == 2
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg2")
-  elsif color == 3
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg3")
-  elsif color == 4
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg4")
-  elsif color == 5
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg5")
-  elsif color == 6
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg6")
-  elsif color == 7 # LIGHT
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg7")
-  elsif color == 8 # Haze
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg8")
-  elsif color == 9 # Fire
-    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg9")
+  if color >= 1
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg#{color}")
   else
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   end

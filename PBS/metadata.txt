@@ -635,11 +635,11 @@ ShowArea = false
 MapPosition = 2,14,15
 #-------------------------------
 [113]
-# Tsuchi Shrine
+# Tsuchi Cavern B2F
 Outdoor = false
 ShowArea = false
 MapPosition = 2,16,15
-BattleBack = CaveBushido1
+BattleBack = CaveBushido5
 #-------------------------------
 [114]
 # Hanatsu Village
@@ -677,10 +677,12 @@ MapPosition = 2,13,3
 BattleBack = Lush
 #-------------------------------
 [119]
-# Tsuchi Shrine
+# Tsuchi Cavern
 Outdoor = false
-ShowArea = false
-MapPosition = 2,16,15
+ShowArea = true
+MapPosition = 2,15,14
+DarkMap = false
+BattleBack = CaveBushido5
 #-------------------------------
 [120]
 # Chikyu Village
@@ -964,4 +966,13 @@ MapPosition = 2,14,5
 Outdoor = false
 ShowArea = true
 MapPosition = 2,14,3
-BattleBack = CaveBushido4
+BattleBack = CaveBushido3
+#-------------------------------
+[174]
+# Tsuchi Cavern B2F
+Outdoor = false
+ShowArea = true
+Bicycle = false
+MapPosition = 2,15,14
+DarkMap = true
+BattleBack = CaveBushido5

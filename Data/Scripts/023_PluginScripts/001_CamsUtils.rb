@@ -660,6 +660,11 @@ end
     end
   end
 
+  def turnOffFollowingPokemon
+	pbToggleFollowingPokemon("off",true)
+  end
+
+
 # ===================================================================
 # Player Katana Techniques
 # ===================================================================
@@ -816,6 +821,27 @@ def pbHotSpringRecovery()
     end
 end
 
+def hotSpringEvent()
+    if($game_switches[63] == true)
+        pbMoveRoute($game_player,[PBMoveRoute::TurnDown])
+        pbWait(4)
+        followingMoveRoute([PBMoveRoute::Jump,-1,-1,PBMoveRoute::TurnDown])
+        pbWait(8)
+        $game_screen.start_tone_change(Tone.new(90,90,90,0), 10 * Graphics.frame_rate / 20)
+        pbWait(4)
+        pbSetPokemonCenter
+        pbMEPlay("Pkmn healing", 70, 100)
+        pbWait(24)
+        $game_switches[63] = false
+        $game_screen.start_tone_change(Tone.new(0,0,0,0), 4 * Graphics.frame_rate / 20)
+        pbWait(4)
+        pbMessage(_INTL("You and your Pokémon feel well rested after stepping into the Hot Spring!"))
+        pbHealAll
+        $PokemonTemp.dependentEvents.come_back(false)
+        pbHotSpringRecovery()
+    end
+end
+
 def getPKTCost(item)
   if PLAYERKATANATECHNIQUES == false
     pbMessage(_INTL("Don't use PKT when they're disabled! Returning a cost of 999!"))
@@ -854,5 +880,58 @@ end
 
 def setNeutralizingGasKT(bool)
     $game_variables[225] = bool
+end
+
+def KomoreiFollowerBarrier()
+    if($game_switches[203]) # If we have a Komorei Follower
+        pbWait(4)
+        pbMoveRoute($game_player, [PBMoveRoute::TurnRight])
+        if($game_variables[102] == 1) # Chikako = 1
+            pbMessage(_INTL("\\xn[Chikako]\\rWe can't leave just yet! We have to help Harumi stop the \\c[9]Akui Clan\\r!"))
+        else # Shinsato = 2
+            pbMessage(_INTL("\\xn[Shinsato]\\bWhere are you going, \\PN? We have to help Harumi!"))
+        end
+        pbMoveRoute($game_player,[PBMoveRoute::Right, PBMoveRoute::Right])
+    end
+end
+
+def startingOverHotSpring(newFollowPokemonID=999)
+    $game_screen.pictures[1].erase
+    $game_screen.pictures[2].erase
+    followingMoveRoute([PBMoveRoute::TurnDown])
+    pbMoveRoute($game_player,[PBMoveRoute::TurnDown])
+    pbWait(4)
+    $game_screen.start_tone_change(Tone.new(90,90,90,0), 10 * Graphics.frame_rate / 20)
+    pbWait(4)
+    pbMEPlay("Pkmn healing", 70, 100)
+    pbHealAll
+    pbWait(24)
+    $game_switches[63] = false # HOT SPRING RESET SWITCH
+    $game_screen.start_tone_change(Tone.new(0,0,0,0), 4 * Graphics.frame_rate / 20)
+    pbWait(4)
+    if($game_switches[203] == true) # Check for Komorei Followers
+        pbRemoveDependencies()
+        $game_switches[203] = false
+        pbPokemonFollow(newFollowPokemonID)
+    end
+    pbMessage(_INTL("You and your Pokémon feel well rested after stepping into the Hot Spring!"))
+    pbToggleFollowingPokemon("on",true)
+    $PokemonTemp.dependentEvents.come_back(false)
+
+    $game_switches[1] = false # STARTING OVER SWITCH
+
+    if($game_switches[82] == false) # Katana of light jank logic fix here
+        if(vHI("KATANALIGHT"))
+            vDI("KATANALIGHT")
+            vAI("KATANABASIC")
+        end
+    end
+    if($game_switches[94] == false) # Switch 94 is TSUKU DONE # No infinite time flute exploits? Whatever this means and prevents haha, an old relic here
+        if(vHI("TIMEFLUTE"))
+            vDI("TIMEFLUTE")
+        end
+    end
+    $game_map.events[@event_id].erase if $game_map.events[@event_id]
+    $PokemonMap.addErasedEvent(@event_id) if $PokemonMap
 end
 

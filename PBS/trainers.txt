@@ -308,9 +308,16 @@ Pokemon = COTTONEE,5
 LoseText = "Well played!"
 Pokemon = TURTWIG,10
 	Moves = QUICKATTACK
-Pokemon = FENNEKIN,10
+	Shadow = yes
 Pokemon = KINGAMBIT,1
 	Ability = 1
+#-------------------------------
+[SHIMIZU_M,TestShi2]
+LoseText = "Well played!"
+Pokemon = TURTWIG,10
+	Moves = QUICKATTACK
+	Shadow = yes
+Pokemon = FENNEKIN,10
 #-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"
@@ -559,7 +566,6 @@ Pokemon = WIMPOD,23
 LoseText = "Agh, I can't ever win!"
 Pokemon = ARON,22
 Pokemon = QWILFISH,23
-	Form = 1
 Pokemon = TOGETIC,24
     Shadow = yes
 #-------------------------------
@@ -569,9 +575,22 @@ Pokemon = GOLDEEN,23
 	Shadow = yes
 Pokemon = GOLETT,24
 Pokemon = GLIGAR,24
-#-------------------------------	
+#-------------------------------
+[AKUICLAN_F,Shizuka]
+LoseText = "Curses... Mashiro was right about you, Masayoshi brat!"
+Pokemon = SNEASEL,24
+Pokemon = STANTLER,25
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Yuto]
+LoseText = "Gah! Mashiro will have my head for this one!"
+Pokemon = QWILFISH,24
+Pokemon = ARBOK,24
+Pokemon = GIRAFARIG,25
+	Shadow = yes
+#-------------------------------
 [MASHIRO,Mashiro]
-LoseText = "You little brat!"
+LoseText = "You... Insufferable child!"
 Pokemon = KIRLIA,25
 Pokemon = INKAY,25
 Pokemon = ESPEON,25
@@ -592,17 +611,17 @@ Pokemon = NINETALES,66
 #-------------------------------
 [KOMOREI_M,Shinsato]
 LoseText = "Very well! You have proven yourself worthy."
-Pokemon = FOMANTIS,26
-Pokemon = SINISTCHA,27
+Pokemon = SINISTCHA,26
 	Moves = MATCHAGOTCHA,FOULPLAY,MEGADRAIN,HEX
 	Item = ROSEINCENSE
+Pokemon = FOMANTIS,26
 Pokemon = ORANGURU,27
 #-------------------------------
 [KOMOREI_F,Chikako]
 LoseText = "You may have beaten me, but can you beat Harumi?"
-Pokemon = WHIMSICOTT,27
-Pokemon = KLEAVOR,27
-Pokemon = ELECTRODE,28
+Pokemon = KLEAVOR,25
+Pokemon = WHIMSICOTT,26
+Pokemon = ELECTRODE,27
 	Form = 1
 	Moves = CHLOROBLAST,THUNDERBOLT,GIGADRAIN,THUNDERWAVE
 #-------------------------------
