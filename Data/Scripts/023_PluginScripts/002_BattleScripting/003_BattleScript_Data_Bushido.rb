@@ -320,6 +320,30 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  KomoreiAlly2 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    pbMessage("\\xn[Shinsato]\\bI'm thrilled to be fighting alongside you, \PN.")
+    pbMessage("\\xn[Shinsato]\\bLet's quickly defeat this \\c[9]Akui Clan\\b grunt and then help Harumi!")
+    scene.disappearBar
+    battle.pbStartTerrainEx(ally2, :Grassy)
+    ally1.pbRaiseStatStageEx(:ATTACK, 1, forced: true)
+    ally2.pbRaiseStatStageEx(:ATTACK, 1, forced: true)
+    scene.appearBar
+    pbMessage("\\rMashiro is counting on me... I can't let you both get past!")
+    pbMessage("\\rShe'll punish us all again... Or worse, we'll be forced to work under Kuro...")
+    pbMessage("\\rI won't let that happen! Both of your journeys end here and now!")
+    scene.disappearBar
+    ally1.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, ally1, false, nil, nil, enemy1)
+    ally2.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, ally2, false, nil, nil, enemy1)
+    ally1.pbSetHazards(:TOXICSPIKES, enemy1) if strong_katanas?
+    scene.pbHideOpponent
+  }
+
   KomoreiDojo1 = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
